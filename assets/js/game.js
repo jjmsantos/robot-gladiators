@@ -7,6 +7,9 @@ var startGame = function() {
   
   // fight each enemy robot by looping over them and fighting them one at a time
   for (var i = 0; i < enemyInfo.length; i++) {
+    //player stats check
+    console.log(playerInfo);
+
     // if player is still alive, keep fight next enemy
     if (playerInfo.health > 0) {
       // let player know what round they are in, remember that arrays start at 0 so it needs to have 1 added to it
@@ -22,6 +25,16 @@ var startGame = function() {
     
       // pass the pickedEnemyObj object variable's value into the fight function, where it will assume the value of the enemy parameter
       fight(pickedEnemyObj);
+
+      if (playerInfo.health > 0 && i < enemyInfo.length - 1) {
+        // ask if player wants to use the store before next round
+        var storeConfirm = window.confirm("The fight is over, visit the store before the next round?");
+
+        // if yes, take them to the store() function
+        if (storeConfirm) {
+          shop();
+        }
+      }
     }
     // if player is not alive, break out of the loop and let endGame function run
     else {
@@ -112,20 +125,18 @@ var fight = function(enemy) {
 // go to shop between battles function
 var shop = function() {
   // ask player what they'd like to do
-  var shopOptionPrompt = window.prompt('Would you like to REFILL your health, UPGRADE your attack, or LEAVE the store? Please enter one "REFILL", "UPGRADE", or "LEAVE" to make a choice.');
+  var shopOptionPrompt = window.prompt('Would you like to REFILL your health, UPGRADE your attack, or LEAVE the store? Please enter one 1 for REFILL, 2 for UPGRADE, or 3 for LEAVE.');
   
+  shopOptionPrompt = parseInt(shopOptionPrompt);
   // use switch case to carry out action
   switch (shopOptionPrompt) {
-    case 'refill':
-    case 'REFILL':
+    case 1:
       playerInfo.refillHealth();
       break;
-    case 'upgrade':
-    case 'UPGRADE':
+    case 2:
       playerInfo.upgradeAttack();
       break;
-    case 'leave':
-    case 'LEAVE':
+    case 3:
       window.alert('Leaving the store.');
       break;
     default:
